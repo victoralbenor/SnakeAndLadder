@@ -15,9 +15,11 @@ public class GameController : MonoBehaviour
 
     int currentPlayer = 0;
     int roll = 0;
+    bool climbedLadder = false;
 
     public void RollDice()
     {
+        climbedLadder = false;
         RollDiceButton.interactable = false;
         roll = Random.Range(1, 7);
         //todo: animate dice roll
@@ -67,6 +69,7 @@ public class GameController : MonoBehaviour
                 players[currentPlayer].position = tiles[players[currentPlayer].position - 1].ladderTo.Number;
                 players[currentPlayer].transform.DOMove(tiles[players[currentPlayer].position - 1].transform.position, 1f);
                 animTime += 1f;
+                climbedLadder = true;
             }
         }
         Invoke("SwapTurn", animTime);
@@ -77,6 +80,10 @@ public class GameController : MonoBehaviour
         if (roll == 6)
         {
             turnText.text = "Rolled 6! Player " + (currentPlayer + 1) + " gets another turn!";
+        }
+        else if (climbedLadder)
+        {
+            turnText.text = "Up the Ladder! Player " + (currentPlayer + 1) + " gets another turn!";
         }
         else
         {
